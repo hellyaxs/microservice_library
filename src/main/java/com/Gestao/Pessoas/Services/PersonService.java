@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,12 +24,10 @@ public class PersonService {
      @Autowired
      private PersonRepository personRepository;
 
-    public void CreatePerson(PersonDTO personDTO){
+    public String CreatePerson(PersonDTO personDTO){
         Person persontoSave = mapperPerson.PersonDtoToPerson(personDTO);
-        System.out.println(personDTO);
-        System.out.println(persontoSave);
         personRepository.save(persontoSave);
-       // return createMessageResponse(persontoSave,"New Person created sucess with ID");
+       return createMessageResponse(persontoSave).getMessagem();
     }
     public Person UpdatePerson(Long id,PersonDTO person) throws PersonNotFoundExeption {
         existeIfID(id);
@@ -47,15 +46,15 @@ public class PersonService {
     }
 
     public List<Person> findAllPerson(){
-       return personRepository.findAll();
+      return personRepository.findAll();
     }
 
     private Person existeIfID(Long id) throws PersonNotFoundExeption {
         return personRepository.findById(id).orElseThrow(()->new PersonNotFoundExeption(id));
     }
 
-   private MessageResponseDTO createMessageResponse(Person person, String message){
-        String messageCon = message+" "+person.getId();
+   private MessageResponseDTO createMessageResponse(Person person){
+        String messageCon = "New Person created sucess with ID" +" "+person.getId();
         return new MessageResponseDTO(messageCon);
 
     }

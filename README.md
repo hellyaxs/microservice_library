@@ -1,4 +1,4 @@
-# API REST'full para gestão de pessoas com Spring Framework
+# API RESTful para gestão de pessoas com Spring Framework
 
 ENDPOINT's
 - [POST](https://person-api-projecto.herokuapp.com/api/v1/Person)

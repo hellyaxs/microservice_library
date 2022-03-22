@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping("api/v1/Person")
 public class PersonController {
@@ -24,19 +27,28 @@ public class PersonController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Person getPerson(@PathVariable Long id) throws PersonNotFoundExeption {
-        return personService.findPerson(id);
+         Person person = personService.findPerson(id);
+         person.add(linkTo(methodOn(PersonController.class).getAll()).withSelfRel());
+         return person;
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Person> getAll() throws PersonNotFoundExeption{
-        return personService.findAllPerson();
+    public List<Person> getAll() throws PersonNotFoundExeption {
+       List<Person> PersonList = personService.findAllPerson();
+        if(!PersonList.isEmpty()){
+            for(Person person : personService.findAllPerson()){
+                Long id = person.getId();
+                person.add(linkTo(methodOn(PersonController.class).getPerson(id)).withSelfRel());
+            }
+        }
+        return PersonList;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void CreatePerson(@RequestBody @Valid PersonDTO personDTO){
-             personService.CreatePerson(personDTO);
+    public String CreatePerson(@RequestBody @Valid PersonDTO personDTO){
+            return personService.CreatePerson(personDTO);
     }
     @PutMapping("/{id}")
     public Person updatePerson(@PathVariable Long id,@RequestBody @Valid PersonDTO person) throws PersonNotFoundExeption {

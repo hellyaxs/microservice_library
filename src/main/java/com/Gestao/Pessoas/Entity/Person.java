@@ -2,6 +2,7 @@ package com.Gestao.Pessoas.Entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @AllArgsConstructor
-public class Person {
+public class Person extends RepresentationModel<Person> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
