@@ -19,3 +19,19 @@ HTTP Methods, Request & Response,
 EndPoints, Core Container,
 DTO's,
 Entidades, JpaRepository, etc.
+
+***Arquivo JSON***
+
+    "firstName":"Name",
+    "lastName":"lastname",
+    "birthdate":"06-10-2002",
+    "endereco":"NEW YORK",
+    "cargo":"Administração",
+    "phones":[
+        {
+            "DDD":"081",
+            "numero":"991426794",
+            "type":"HOME"
+        }
+    ]
+
