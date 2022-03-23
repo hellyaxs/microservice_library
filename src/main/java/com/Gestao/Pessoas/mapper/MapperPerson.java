@@ -7,8 +7,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 @Service
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",imports = {Arrays.class})
 public interface MapperPerson {
 
     MapperPerson INSTACE = Mappers.getMapper(MapperPerson.class);

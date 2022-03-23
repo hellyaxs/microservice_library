@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,14 +23,21 @@ public class PersonService {
      @Autowired
      private PersonRepository personRepository;
 
-    public String CreatePerson(PersonDTO personDTO){
+    public Person CreatePerson(PersonDTO personDTO){
         Person persontoSave = mapperPerson.PersonDtoToPerson(personDTO);
-        personRepository.save(persontoSave);
-       return createMessageResponse(persontoSave).getMessagem();
+        System.out.println(personDTO);
+        System.out.println(persontoSave);
+        return personRepository.save(persontoSave);
+        //createMessageResponse(persontoSave).getMessagem();
     }
+
     public Person UpdatePerson(Long id,PersonDTO person) throws PersonNotFoundExeption {
-        existeIfID(id);
+        Person existPerson = existeIfID(id);
         Person personUpdate = MapperPerson.INSTACE.PersonDtoToPerson(person);
+        if(existPerson.equals(Person.class)){
+            personUpdate.setId(id);
+            personRepository.delete(existPerson);
+        }
         return personRepository.save(personUpdate);
 
     }

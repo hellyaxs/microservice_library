@@ -1,8 +1,13 @@
 package com.Gestao.Pessoas.DTO;
 
+import com.Gestao.Pessoas.Entity.Phone;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 
 @Builder
@@ -26,14 +31,21 @@ public class PersonDTO {
 
     private String cargo;
 
+    @Valid
+    @NotNull
+    @Autowired
+    private List<PhoneDTO> phones;
+
     @Override
     public String toString() {
         return "PersonDTO{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthdate='" + birthdate + '\'' +
                 ", endereco='" + endereco + '\'' +
                 ", cargo='" + cargo + '\'' +
+                ", phones=" + phones +
                 '}';
     }
 
@@ -83,5 +95,12 @@ public class PersonDTO {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
+    }
+
+    public List<PhoneDTO> getPhones() {
+        return phones;
+    }
+    public void setPhones(List<PhoneDTO> phones) {
+        this.phones = phones;
     }
 }

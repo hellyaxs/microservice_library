@@ -47,16 +47,17 @@ public class PersonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String CreatePerson(@RequestBody @Valid PersonDTO personDTO){
+    public Person CreatePerson(@RequestBody @Valid PersonDTO personDTO){
             return personService.CreatePerson(personDTO);
     }
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Person updatePerson(@PathVariable Long id,@RequestBody @Valid PersonDTO person) throws PersonNotFoundExeption {
         return personService.UpdatePerson(id,person);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePerson(@PathVariable Long id) throws PersonNotFoundExeption {
         personService.Delete(id);
     }

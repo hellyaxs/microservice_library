@@ -1,11 +1,13 @@
 package com.Gestao.Pessoas.Entity;
 
+import com.Gestao.Pessoas.DTO.PhoneDTO;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Builder
@@ -25,17 +27,20 @@ public class Person extends RepresentationModel<Person> {
     @Column(name = "FRIST_NAME",length = 100,nullable = false)
     private String firstName;
 
-    @Column(name = "LAST_NAME")
+    @Column(name = "LAST_NAME",length = 100)
     private String lastName;
 
     @Column(name = "birthdate")
     private LocalDate birthdate;
 
-    @Column(name= "endereco")
+    @Column(name = "endereco")
     private String endereco;
 
-    @Column(name= "cargo")
+    @Column(name = "cargo")
     private String cargo;
+
+    @OneToMany(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<Phone> phones;
 
     @Override
     public boolean equals(Object o) {
@@ -59,6 +64,7 @@ public class Person extends RepresentationModel<Person> {
                 ", birthdate=" + birthdate +
                 ", endereco='" + endereco + '\'' +
                 ", cargo='" + cargo + '\'' +
+                ", phones=" + phones +
                 '}';
     }
 
@@ -108,5 +114,13 @@ public class Person extends RepresentationModel<Person> {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
+    }
+
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
     }
 }

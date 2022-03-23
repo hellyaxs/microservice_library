@@ -1,8 +1,9 @@
 # API RESTful para gestão de pessoas com Spring Framework
 
-ENDPOINT's
+#### ENDPOINT's
 - [POST](https://person-api-projecto.herokuapp.com/api/v1/Person)
-- [GET](https://person-api-projecto.herokuapp.com/api/v1/Person/1)
+- [GET ALL](https://person-api-projecto.herokuapp.com/api/v1/Person)
+- [GET ONE](https://person-api-projecto.herokuapp.com/api/v1/Person/1)
 - [PUT](https://person-api-projecto.herokuapp.com/api/v1/Person/1)
 - [DELETE](https://person-api-projecto.herokuapp.com/api/v1/Person/1)
 >Nesta API foram utilizadas das pricipais ferramentas disponibilizadas pelo Spring Framework
