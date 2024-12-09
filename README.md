@@ -7,8 +7,14 @@
 - [PUT](https://person-api-projecto.herokuapp.com/api/v1/Person/1)
 - [DELETE](https://person-api-projecto.herokuapp.com/api/v1/Person/1)
 >Nesta API foram utilizadas das pricipais ferramentas disponibilizadas pelo Spring Framework
->- spring Data JPA
->- Spring Boot 
+>- spring reactive data r2dbc
+>- Spring webflux 
+>- validation
+>- swagger
+>- lombok
+>- mapstruct
+>- postgresql
+>- docker-compose
 
 Com esse projeto fui capaz de consolidar 
 conceitos como

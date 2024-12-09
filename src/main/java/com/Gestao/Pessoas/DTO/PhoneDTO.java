@@ -1,12 +1,9 @@
 package com.Gestao.Pessoas.DTO;
 
 import com.Gestao.Pessoas.enums.TypePhone;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 public class PhoneDTO{
 
@@ -19,7 +16,6 @@ public class PhoneDTO{
     @NotNull
     private String numero;
 
-    @Enumerated(EnumType.STRING)
     private TypePhone type;
 
     public Long getId() {
@@ -54,7 +50,6 @@ public class PhoneDTO{
         this.type = type;
     }
 
-    @Autowired
     public PhoneDTO(Long id, String DDD, String numero, TypePhone type) {
         this.id = id;
         this.DDD = DDD;

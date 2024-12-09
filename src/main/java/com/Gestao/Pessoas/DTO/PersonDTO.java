@@ -1,12 +1,11 @@
 package com.Gestao.Pessoas.DTO;
 
-import com.Gestao.Pessoas.Entity.Phone;
-import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+
 import java.util.List;
 
 
@@ -33,7 +32,6 @@ public class PersonDTO {
 
     @Valid
     @NotNull
-    @Autowired
     private List<PhoneDTO> phones;
 
     @Override

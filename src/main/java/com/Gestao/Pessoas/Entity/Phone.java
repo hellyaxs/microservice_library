@@ -2,31 +2,30 @@ package com.Gestao.Pessoas.Entity;
 
 import com.Gestao.Pessoas.enums.TypePhone;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-import javax.persistence.*;
 
-@Entity
 @Table(name = "phone")
 public class Phone {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column("id")
     private Long id;
 
-    @Column(name ="DDD" ,length = 3,nullable = false)
+    @Column("DDD")
     private String DDD;
 
-    @Column(name = "numero",nullable = false,length = 9)
+    @Column("numero")
     private String numero;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo")
+
+    @Column("tipo")
     private TypePhone type;
 
     public Phone() {
     }
 
-    @Autowired
     public Phone(Long id, String DDD, String numero, TypePhone type) {
         this.id = id;
         this.DDD = DDD;

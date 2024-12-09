@@ -1,54 +1,43 @@
 package com.Gestao.Pessoas.Entity;
 
-import com.Gestao.Pessoas.DTO.PhoneDTO;
 import lombok.*;
-import org.hibernate.Hibernate;
-import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
+
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 @Builder
-@Entity
 @Table(name = "person")
 @Setter
 @NoArgsConstructor
 @Getter
 @AllArgsConstructor
-public class Person extends RepresentationModel<Person> {
+public class Person  {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
+    @Column("ID")
     private Long id;
 
-    @Column(name = "FRIST_NAME",length = 100,nullable = false)
+    @Column("FRIST_NAME")
     private String firstName;
 
-    @Column(name = "LAST_NAME",length = 100)
+    @Column("LAST_NAME")
     private String lastName;
 
-    @Column(name = "birthdate")
+    @Column("birthdate")
     private LocalDate birthdate;
 
-    @Column(name = "endereco")
+    @Column("endereco")
     private String endereco;
 
-    @Column(name = "cargo")
+    @Column("cargo")
     private String cargo;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Phone> phones;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Person person = (Person) o;
-        return id != null && Objects.equals(id, person.id);
-    }
 
     @Override
     public int hashCode() {

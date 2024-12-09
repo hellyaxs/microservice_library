@@ -10,20 +10,26 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 @Service
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class PersonService {
 
-     @Autowired
-     private MapperPerson mapperPerson;
-     @Autowired
-     private PersonRepository personRepository;
 
-    public Person CreatePerson(PersonDTO personDTO){
+     private final MapperPerson mapperPerson;
+
+     private final PersonRepository personRepository;
+
+    public PersonService(MapperPerson mapperPerson, PersonRepository personRepository) {
+        this.mapperPerson = mapperPerson;
+        this.personRepository = personRepository;
+    }
+
+    public Mono<Person> CreatePerson(PersonDTO personDTO){
         Person persontoSave = mapperPerson.PersonDtoToPerson(personDTO);
         System.out.println(personDTO);
         System.out.println(persontoSave);
@@ -31,32 +37,32 @@ public class PersonService {
         //createMessageResponse(persontoSave).getMessagem();
     }
 
-    public Person UpdatePerson(Long id,PersonDTO person) throws PersonNotFoundExeption {
-        Person existPerson = existeIfID(id);
+    public Mono<Person> UpdatePerson(Long id, PersonDTO person) throws PersonNotFoundExeption {
+        Mono<Person> existPerson = existeIfID(id);
         Person personUpdate = MapperPerson.INSTACE.PersonDtoToPerson(person);
         if(existPerson.equals(Person.class)){
             personUpdate.setId(id);
-            personRepository.delete(existPerson);
+            personRepository.delete(existPerson.block());
         }
         return personRepository.save(personUpdate);
 
     }
 
-    public Person findPerson(Long id) throws PersonNotFoundExeption {
+    public Mono<Person> findPerson(Long id)  {
         return existeIfID(id);
     }
 
-    public void Delete(Long id) throws PersonNotFoundExeption {
+    public void Delete(Long id)  {
          existeIfID(id);
          personRepository.deleteById(id);
     }
 
-    public List<Person> findAllPerson(){
+    public Flux<Person> findAllPerson(){
       return personRepository.findAll();
     }
 
-    private Person existeIfID(Long id) throws PersonNotFoundExeption {
-        return personRepository.findById(id).orElseThrow(()->new PersonNotFoundExeption(id));
+    private Mono<Person> existeIfID(Long id) {
+        return personRepository.findById(id);
     }
 
    private MessageResponseDTO createMessageResponse(Person person){
