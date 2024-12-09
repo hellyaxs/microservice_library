@@ -57,6 +57,16 @@ public class Person  {
                 '}';
     }
 
+    public Person(Long id, String firstName, String lastName, LocalDate birthdate, String endereco, String cargo, List<Phone> phones) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthdate = birthdate;
+        this.endereco = endereco;
+        this.cargo = cargo;
+        this.phones = phones;
+    }
+
     public Long getId() {
         return id;
     }

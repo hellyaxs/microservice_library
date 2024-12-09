@@ -1,7 +1,6 @@
 package com.Gestao.Pessoas.Entity;
 
 import com.Gestao.Pessoas.enums.TypePhone;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;

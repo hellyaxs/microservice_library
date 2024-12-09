@@ -1,5 +1,6 @@
 package com.Gestao.Pessoas.DTO;
 
+import com.Gestao.Pessoas.Entity.Phone;
 import com.Gestao.Pessoas.enums.TypePhone;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -65,5 +66,8 @@ public class PhoneDTO{
                 ", numero='" + numero + '\'' +
                 ", type='" + type + '\'' +
                 '}';
+    }
+    public static Phone ToDomain(PhoneDTO phoneDTO){
+        return new Phone(phoneDTO.getId(), phoneDTO.getDDD(), phoneDTO.getNumero(), phoneDTO.getType());
     }
 }

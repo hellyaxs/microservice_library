@@ -1,11 +1,14 @@
 package com.Gestao.Pessoas.DTO;
 
 
+import com.Gestao.Pessoas.Entity.Person;
+import com.Gestao.Pessoas.Entity.Phone;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -100,5 +103,10 @@ public class PersonDTO {
     }
     public void setPhones(List<PhoneDTO> phones) {
         this.phones = phones;
+    }
+
+    public static Person ToDomain(PersonDTO personDTO){
+        List<Phone> phoneStream = personDTO.phones.stream().map(PhoneDTO::ToDomain).toList();
+        return new Person(personDTO.id, personDTO.firstName, personDTO.lastName, LocalDate.now(), personDTO.endereco, personDTO.cargo, phoneStream);
     }
 }
