@@ -8,8 +8,9 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "phone")
 public class Phone {
+
+
     @Id
-    @Column("id")
     private Long id;
 
     @Column("DDD")
@@ -18,9 +19,11 @@ public class Phone {
     @Column("numero")
     private String numero;
 
-
     @Column("tipo")
     private TypePhone type;
+
+    @Column("person_id")
+    private Long personId;
 
     public Phone() {
     }
@@ -30,6 +33,14 @@ public class Phone {
         this.DDD = DDD;
         this.numero = numero;
         this.type = type;
+    }
+
+    public Long getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
 
     public Long getId() {

@@ -34,8 +34,19 @@ public class PersonService {
         this.phoneRepository = phoneRepository;
     }
 
-    public Mono<Person> CreatePerson(PersonDTO personDTO){
-           return Mono.just(PersonDTO.ToDomain(personDTO)).flatMap(personRepository::save);
+    public Mono<Person> CreatePerson(PersonDTO personDTO) {
+        Person persontoSave = PersonDTO.ToDomain(personDTO);
+        persontoSave.setId(null);
+        return personRepository.save(persontoSave) // Salva a pessoa
+                .flatMap(savedPerson -> {
+                   return Flux.fromIterable(persontoSave.getPhones())
+                            .flatMap(phone -> {
+                                phone.setId(null);
+                                phone.setPersonId(savedPerson.getId());
+                                return phoneRepository.save(phone); // Salva os telefones
+                            })
+                            .then(Mono.just(savedPerson));
+                });
 
 
 //        return personRepository.save(persontoSave)

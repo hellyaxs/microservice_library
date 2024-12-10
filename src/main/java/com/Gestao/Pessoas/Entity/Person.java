@@ -3,6 +3,7 @@ package com.Gestao.Pessoas.Entity;
 import lombok.*;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -14,11 +15,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Getter
-@AllArgsConstructor
 public class Person  {
 
-    @Id
     @Column("ID")
+    @Id
     private Long id;
 
     @Column("FRIST_NAME")
@@ -36,6 +36,8 @@ public class Person  {
     @Column("cargo")
     private String cargo;
 
+
+    @Transient
     private List<Phone> phones;
 
 
