@@ -36,10 +36,7 @@ public class PersonController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Flux<Person> getAll()  {
-       return  personService.findAllPerson().switchIfEmpty(Flux.empty()).flatMap(fluxPerson-> {
-//            fluxPerson.add(linkTo(methodOn(PersonController.class).getPerson(fluxPerson.getId())).withSelfRel());
-            return Flux.just(fluxPerson);
-        });
+        return  personService.findAllPerson().switchIfEmpty(Flux.empty()).flatMap(Flux::just);
        }
 
     @PostMapping

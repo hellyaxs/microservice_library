@@ -19,12 +19,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-
 public class PersonService {
 
 
      private final MapperPerson mapperPerson;
-
      private final PersonRepository personRepository;
      private final PhoneRepository phoneRepository;
 
@@ -47,17 +45,6 @@ public class PersonService {
                             })
                             .then(Mono.just(savedPerson));
                 });
-
-
-//        return personRepository.save(persontoSave)
-//                .flatMap(savedPerson -> {
-//                    // Salvar os telefones após a pessoa ser salva
-//                    List<Phone> phones = personDTO.getPhones().stream()
-//                            .map(phoneDTO -> new Phone(personDTO.getId(), phoneDTO.getDDD(), phoneDTO.getNumero(), phoneDTO.getType()))
-//                            .collect(Collectors.toList());
-//                    return phoneRepository.saveAll(phones).collectList().map(savedPhones -> savedPerson);
-//                });
-        //createMessageResponse(persontoSave).getMessagem();
     }
 
     public Mono<Person> UpdatePerson(Long id, PersonDTO person) throws PersonNotFoundExeption {
@@ -81,7 +68,15 @@ public class PersonService {
     }
 
     public Flux<Person> findAllPerson(){
-      return personRepository.findAll();
+      return personRepository.findAll().flatMap(person -> {
+          return phoneRepository.findByPersonId(person.getId())
+                  .defaultIfEmpty(new Phone()).defaultIfEmpty(new Phone()) // Retorna um Phone vazio, se não houver resultados
+                  .collectList()
+                  .flatMapMany(phone -> {
+                    person.setPhones(phone);
+                    return Flux.just(person);
+                 });
+          });
     }
 
     private Mono<Person> existeIfID(Long id) {

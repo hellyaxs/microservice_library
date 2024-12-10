@@ -28,6 +28,14 @@ public class Phone {
     public Phone() {
     }
 
+    public Phone(Long id, String DDD, String numero, TypePhone type, Long personId) {
+        this.id = id;
+        this.DDD = DDD;
+        this.numero = numero;
+        this.type = type;
+        this.personId = personId;
+    }
+
     public Phone(Long id, String DDD, String numero, TypePhone type) {
         this.id = id;
         this.DDD = DDD;

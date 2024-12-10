@@ -37,7 +37,6 @@ public class Person  {
     private String cargo;
 
 
-    @Transient
     private List<Phone> phones;
 
 
