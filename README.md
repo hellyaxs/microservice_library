@@ -1,30 +1,11 @@
-# API RESTful para gestão de pessoas com Spring Framework
+# API REST para gestão de pessoas pensando em alta disponibilidade (HA)
 
-#### ENDPOINT's
-- [POST](https://person-api-projecto.herokuapp.com/api/v1/Person)
-- [GET ALL](https://person-api-projecto.herokuapp.com/api/v1/Person)
-- [GET ONE](https://person-api-projecto.herokuapp.com/api/v1/Person/1)
-- [PUT](https://person-api-projecto.herokuapp.com/api/v1/Person/1)
-- [DELETE](https://person-api-projecto.herokuapp.com/api/v1/Person/1)
->Nesta API foram utilizadas das pricipais ferramentas disponibilizadas pelo Spring Framework
->- spring reactive data r2dbc
->- Spring webflux 
->- validation
->- swagger
->- lombok
->- mapstruct
->- postgresql
->- docker-compose
-
-Com esse projeto fui capaz de consolidar 
-conceitos como
-inversão de controle e
-injeção de dependecias,
-notações do Spring Boot,
-HTTP Methods, Request & Response,
-EndPoints, Core Container,
-DTO's,
-Entidades, JpaRepository, etc.
+![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
+![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
+![RabbitMQ](https://img.shields.io/badge/Rabbitmq-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
 
 ***Arquivo JSON***
 
@@ -41,3 +22,14 @@ Entidades, JpaRepository, etc.
         }
     ]
 
+## ENDPOINT's
+
+- [POST](https://person-api-projecto.herokuapp.com/api/v1/Person)
+- [GET ALL](https://person-api-projecto.herokuapp.com/api/v1/Person)
+- [GET ONE](https://person-api-projecto.herokuapp.com/api/v1/Person/1)
+- [PUT](https://person-api-projecto.herokuapp.com/api/v1/Person/1)
+- [DELETE](https://person-api-projecto.herokuapp.com/api/v1/Person/1)
+
+## diagrama da arquitetura
+
+![Arquitetura](./diagrama.png)

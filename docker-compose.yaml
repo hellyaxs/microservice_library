@@ -1,14 +1,60 @@
 services:
+  
+  api-java:
+    extends:
+      file: ./api-java/docker-compose.yaml
+      service: api-java
+    depends_on:
+      - rabbitmq
+      
+  api-nestjs:
+    extends:
+      file: ./api-nestjs/docker-compose.yaml
+      service: api-nestjs  
+    depends_on:
+      - rabbitmq
 
-  postgres-service:
-    container_name: postgres-service
+  api-flask:
+    extends:
+      file: ./api-flask/docker-compose.yaml
+      service: api-flask
+    depends_on:
+    - rabbitmq
+
+  api-golang:
+    extends:
+        file: ./api-golang/docker-compose.yaml
+        service: api-golang
+    depends_on:
+      - rabbitmq
+    networks:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - backend
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+  database:
     image: postgres:15
-    restart: always
     ports:
       - "5432:5432"
+    networks:
+      - backend
     environment:
-      POSTGRES_DB: mydatabase
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: database
     volumes:
-      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - postgres-data:/var/lib/postgresql/data    
+
+networks:
+  backend:
+    driver: bridge

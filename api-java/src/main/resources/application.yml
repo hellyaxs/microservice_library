@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: spring-webflux-r2dbc
+
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/mydatabase
+    username: root
+    password: root
+    pool:
+      initial-size: 5
+      max-size: 40
+      min-idle: 5
+  flyway:
+    locations: classpath:db/migration
+    url: jdbc:postgresql://localhost:5432/mydatabase
+
+    user: root
+    password: root
+
+grpc:
+  server:
+    port: 9090
+    in-process-name: exampleService
