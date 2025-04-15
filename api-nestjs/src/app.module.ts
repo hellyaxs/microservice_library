@@ -1,23 +1,22 @@
-import { Global, Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Module } from '@nestjs/common';
+import { LivrosModule } from './livros/livros.module';
+import { PagamentoModule } from './pagamento/pagamento.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
+import { EmprestimoModule } from './emprestimo/emprestimo.module';
+import { ConfigModule } from '@nestjs/config';
 
-@Global()
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'RABBITMQ_SERVICE',
-        transport: Transport.RMQ,
-        options: {
-          urls: ['amqp://apicconn:root@localhost:5672'],
-          queue: 'person_created',
-        },
-      },
-    ]),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    EmprestimoModule,
+    UsuariosModule,
+    PagamentoModule,
+    LivrosModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
