@@ -1,0 +1,8 @@
+services:
+  api-nestjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-nestjs
+    ports:
+      - "3000:3000"
