@@ -1,21 +1,25 @@
-FROM golang:1.20 AS builder
+FROM golang:1.23.2 AS builder
 
 WORKDIR /app
 
-COPY go.mod ./
-COPY go.sum ./
+COPY go.mod go.sum ./
 RUN go mod download
 
-COPY src/ ./src/
+COPY . .
 
-RUN go build -o gin-app ./src/main.go
+# Compilar binário estaticamente
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o gin-app ./cmd/processor/main.go
 
+# Imagem final mínima
 FROM alpine:latest
 
 WORKDIR /root/
 
 COPY --from=builder /app/gin-app .
 
+# Garantir permissão de execução (opcional, mas por segurança)
+RUN chmod +x /root/gin-app
+
 EXPOSE 8080
 
-CMD ["./gin-app"]
+CMD ["/root/gin-app"]

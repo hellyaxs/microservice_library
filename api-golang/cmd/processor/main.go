@@ -1,15 +1,14 @@
 package main
 
-
 import (
 	rabbbitmq "github.com/hellyaxs/pkg/rabbbitmq"
-	
 )
 
 func main() {
-	rt,err := rabbbitmq.NewConection("hello")
-	if err != nil {
-		panic(err)
-	}
-	rt.Consumer(rt.Ch, rt.Q)
+
+    rq := &rabbbitmq.RabbitMQ{}
+    rq.Connect()
+    go rq.Consumer("person_created")
+	go rq.Consumer("person_updated")
+	select {}
 }

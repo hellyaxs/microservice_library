@@ -1,4 +1,12 @@
 services:
+  api-golang:
+    container_name: api-golang
+    build:
+      context: .
+      dockerfile: dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
 
   postgres-service:
     container_name: postgres-service
