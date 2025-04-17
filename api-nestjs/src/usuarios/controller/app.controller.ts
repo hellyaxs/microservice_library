@@ -4,9 +4,9 @@ import {
   CreatedPersonEvent,
   PersonCreatedEvent,
 } from '../events/create_person.event';
-import { AppService } from './app.service';
+import { AppService } from '../services/app.service';
 
-@Controller()
+@Controller('usuarios')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
