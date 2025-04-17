@@ -2,7 +2,9 @@ services:
   api-nestjs:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     container_name: api-nestjs
     ports:
-      - "3000:3000"
+      - "3000:8080"
+    environment:
+      - RABBITMQ_URL=amqp://apicconn:root@rabbitmq:5672

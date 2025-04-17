@@ -30,7 +30,7 @@ FROM debian:bullseye-slim
 
 ENV NODE_ENV=production
 
-COPY --from=build /usr/src/app/build-app /usr/local/bin/app
+COPY --from=build /usr/src/app/nestjs-gateway /usr/local/bin/app
 RUN chmod +x /usr/local/bin/app
 
 CMD ["app"]
