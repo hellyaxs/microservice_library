@@ -10,14 +10,18 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 
 @Service
-@Mapper(componentModel = "spring",imports = {Arrays.class})
-public interface MapperPerson {
+//@Mapper(componentModel = "spring",imports = {Arrays.class})
+public class MapperPerson {
 
-    MapperPerson INSTACE = Mappers.getMapper(MapperPerson.class);
+//    MapperPerson INSTACE = Mappers.getMapper(MapperPerson.class);
 
-    @Mapping(target = "birthdate" ,dateFormat = "dd-MM-yyyy")
-    Person PersonDtoToPerson(PersonDTO personDTO);
+//    @Mapping(target = "birthdate", dateFormat = "dd-MM-yyyy")
+    Person PersonDtoToPerson(PersonDTO personDTO) {
+        return null;
+    }
 
-    PersonDTO toDTO(Person person);
+    PersonDTO toDTO(Person person) {
+        return null;
+    }
 
 }
