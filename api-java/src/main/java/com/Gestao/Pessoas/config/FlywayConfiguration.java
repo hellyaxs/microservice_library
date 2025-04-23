@@ -12,21 +12,26 @@ import javax.sql.DataSource;
 @Configuration
 public class FlywayConfiguration {
 
-    @Value("{spring.flyway.url}")
+    @Value("${spring.flyway.url}")
     private String url;
-    @Value("{spring.flyway.user}")
+    @Value("${spring.flyway.user}")
     private String user;
-    @Value("{spring.flyway.password}")
+    @Value("${spring.flyway.password}")
     private String password;
+
+    @Value("${spring.flyway.locations}")
+    private String locations;
+
+
 
     @Bean
     @FlywayDataSource
     public DataSource flywayDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/mydatabase");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setUrl(this.url);
+        dataSource.setUsername(this.user);
+        dataSource.setPassword(this.password);
         return dataSource;
     }
 
