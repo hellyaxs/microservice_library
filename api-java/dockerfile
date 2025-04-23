@@ -1,0 +1,32 @@
+FROM maven:latest AS builder
+
+WORKDIR /app
+
+# Instalar protoc e outras dependências necessárias
+RUN apt-get update && \
+    apt-get install -y protobuf-compiler && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Baixar e instalar o plugin gRPC Java
+RUN wget -O /usr/local/bin/protoc-gen-grpc-java https://repo1.maven.org/maven2/io/grpc/protoc-gen-grpc-java/1.54.2/protoc-gen-grpc-java-1.54.2-linux-x86_64.exe && \
+    chmod +x /usr/local/bin/protoc-gen-grpc-java
+
+COPY pom.xml .
+COPY src ./src
+
+# Configurar variáveis de ambiente para o Maven
+ENV PATH="/usr/local/bin:${PATH}"
+ENV MAVEN_OPTS="-DprotocExecutable=/usr/bin/protoc"
+
+RUN mvn clean package -DskipTests
+
+FROM openjdk:17-slim
+
+WORKDIR /app
+
+EXPOSE 8087
+
+COPY --from=builder /app/target/Pessoas.jar app.jar
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -1,4 +1,12 @@
 services:
+  api-java:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: api-java
+    restart: always
+    ports:
+      - "8087:8087"
 
   postgres-service:
     container_name: postgres-service
