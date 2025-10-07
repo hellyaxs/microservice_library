@@ -1,16 +1,25 @@
 services:
-  
-  # api-java:
-  #   extends:
-  #     file: ./api-java/docker-compose.yaml
-  #     service: api-java
-  #   depends_on:
-  #     rabbitmq:
-  #        condition: service_healthy
-      
+  api-java:
+    extends:
+      file: ./api-java-person/docker-compose.yaml
+      service: api-java
+    depends_on:
+      rabbitmq:
+         condition: service_healthy
+      database:
+        condition: service_healthy
+    networks:
+      - backend
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 512M
   api-nestjs:
     extends:
-      file: ./api-nestjs/docker-compose.yaml
+      file: ./api-nestjs-gateway/docker-compose.yaml
       service: api-nestjs  
     depends_on:
       rabbitmq:
@@ -19,18 +28,34 @@ services:
       - RABBITMQ_URL=${RABBITMQ_URL}
     networks:
       - backend
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 512M
 
-  # api-flask:
-  #   extends:
-  #     file: ./api-flask/docker-compose.yaml
-  #     service: api-flask
-  #   depends_on:
-  #     rabbitmq:
-  #        condition: service_healthy
+  api-flask:
+    extends:
+      file: ./api-flask-pagamentos/docker-compose.yaml
+      service: api-flask
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - .env:/app/.env
+    networks:
+      - backend
+    environment:
+       - PYTHONUNBUFFERED=1
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 512M
 
   api-golang:
     extends:
-        file: ./api-golang/docker-compose.yaml
+        file: ./api-golang-notificacoes/docker-compose.yaml
         service: api-golang
     depends_on:
       api-nestjs:
@@ -41,6 +66,11 @@ services:
       - .env:/root/.env
     networks:
       - backend
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 512M
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -68,19 +98,22 @@ services:
       rabbitmqctl set_permissions -p / ${RABBITMQ_USER} '.*' '.*' '.*';
       wait \$$pid"
 
-
-  # database:
-  #   image: postgres:15
-  #   ports:
-  #     - "5432:5432"
-  #   networks:
-  #     - backend
-  #   environment:
-  #     POSTGRES_USER: user
-  #     POSTGRES_PASSWORD: password
-  #     POSTGRES_DB: database
-  #   volumes:
-  #     - postgres-data:/var/lib/postgresql/data    
+  database:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}   
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USER}", "-d", "${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 networks:
   backend:
