@@ -82,8 +82,8 @@ services:
     networks:
       - backend
     environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_ADMIN}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_ADMIN_PASSWORD}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_ADMIN:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_ADMIN_PASSWORD:-guest}
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
       interval: 10s
@@ -96,8 +96,8 @@ services:
       pid=\$!;
       echo 'Aguardando o RabbitMQ iniciar...';
       while ! rabbitmqctl status >/dev/null 2>&1; do sleep 1; done;
-      rabbitmqctl add_user ${RABBITMQ_USER} ${RABBITMQ_PASSWORD};
-      rabbitmqctl set_permissions -p / ${RABBITMQ_USER} '.*' '.*' '.*';
+      rabbitmqctl add_user ${RABBITMQ_USER:-apicconn} ${RABBITMQ_PASSWORD:-root};
+      rabbitmqctl set_permissions -p / ${RABBITMQ_USER:-apicconn} '.*' '.*' '.*';
       wait \$$pid"
 
   # Banco de ESCRITA (primary) – use para INSERT/UPDATE/DELETE
