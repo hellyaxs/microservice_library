@@ -1,9 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { AppHttpService } from 'src/common/httpService';
+import { MicroservicesConfigService } from 'src/config/microservices.config';
 import { RabbitMQService } from 'src/rabbitmq/rabbitmqService';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly rabbitmq: RabbitMQService) {
+  constructor(
+    private readonly rabbitmq: RabbitMQService,
+    private readonly httpService: AppHttpService,
+    private readonly microservicesConfig: MicroservicesConfigService,
+  ) {
     this.rabbitmq.createQueue('person_created');
     this.rabbitmq.createQueue('person_deleted');
     this.rabbitmq.createQueue('person_updated');
@@ -31,5 +37,10 @@ export class AppService {
       data: 'heelos',
     });
     return 'Hello World!';
+  }
+
+  async getUsers() {
+    const { url, timeout } = this.microservicesConfig.users;
+    return this.httpService.getAsProxy(`${url}`, { timeout });
   }
 }

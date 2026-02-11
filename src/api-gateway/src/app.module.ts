@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { LivrosModule } from './livros/livros.module';
-import { PagamentoModule } from './pagamento/pagamento.module';
-import { UsuariosModule } from './usuarios/usuarios.module';
-import { EmprestimoModule } from './emprestimo/emprestimo.module';
 import { ConfigModule } from '@nestjs/config';
+import { CommonModule } from './common/common.module';
+import { EmprestimoModule } from './modules/emprestimo/emprestimo.module';
+import { LivrosModule } from './modules/books/livros.module';
+import { PagamentoModule } from './modules/pagamento/pagamento.module';
+import { UsuariosModule } from './modules/users/usuarios.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       envFilePath: '.env',
     }),
+    CommonModule,
     EmprestimoModule,
     UsuariosModule,
     PagamentoModule,

@@ -6,15 +6,11 @@ import {
 } from '../events/create_person.event';
 import { AppService } from '../services/app.service';
 
-@Controller('usuarios')
+@Controller('users')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    this.appService.getHello();
-    return 'message sent';
-  }
+  constructor(
+    private readonly appService: AppService,
+  ) {}
 
   @Post()
   createPerson(@Body() person: PersonCreatedEvent): string {
@@ -35,5 +31,9 @@ export class AppController {
     const event = new CreatedPersonEvent(person);
     this.appService.handlePersondelete(event);
     return 'message sent';
+  }
+  @Get()
+  async getUsers() {
+    return this.appService.getUsers();
   }
 }
