@@ -8,30 +8,21 @@
 
 Este projeto é uma aplicação de livraria distribuída, baseada em **Microsserviços**. Ele simula um ecossistema robusto, escalável e assíncrono de uma livraria online, utilizando diferentes linguagens e tecnologias em cada serviço.
 
-
 ## 📌 Visão Geral
 
 A aplicação é composta por múltiplos serviços independentes que se comunicam de forma assíncrona via **RabbitMQ**, com descoberta de serviços usando o **Consul**. A arquitetura contempla tanto **BD de escrita** (write DB) quanto **BD de leitura** (read DB), visando performance e escalabilidade.
 
 ---
 
-## 🧱 Arquitetura
-
-+------------------+ +------------------+ +--------------------+ | Frontend App | <---> | API Gateway | <---> | Service Discovery | +------------------+ +------------------+ +--------------------+ | | --------------------------------------------- | | | | | +--------+ +--------+ +--------+ +--------+
-| Livros | | Users | | Pagamentos | Notificações ... +--------+ +--------+ +--------+ +--------+ \ \ \ / RabbitMQ RabbitMQ RabbitMQ ...
-
-
----
-
 ## 🔧 Tecnologias Utilizadas
 
-| Serviço         | Linguagem | Framework       | Banco de Dados | Observações                        |
+| Serviço        | Linguagem | Framework        | Banco de Dados | Observações                        |
 |----------------|-----------|------------------|----------------|------------------------------------|
-| Livros         | Node.js   | NestJS           | PostgreSQL     | Gerencia livros e estoque          |
-| Users          | Java      | Spring Boot      | PostgreSQL     | Autenticação e dados dos usuários  |
-| Pagamentos     | Python    | FastAPI          | PostgreSQL     | Processamento de pagamentos        |
-| Notificações   | Go        | Fiber            | PostgreSQL     | Envia notificações aos usuários    |
+| Livros         | Java      | Spring Boot      | PostgreSQL     | Gerencia livros e estoque          |
+| Users          | Node.js   |  NestJS          | PostgreSQL     | Autenticação e dados dos usuários  |
+| Pagamentos     | Java      | Spring Boot      | PostgreSQL     | Processamento de pagamentos        |
 | Empréstimos    | GO        | gin              | PostgreSQL     | Controle de empréstimos de livros  |
+| Notificações   | Python    | FastAPI          | PostgreSQL     | Envia notificações aos usuários    |
 | Mensageria     | -         | RabbitMQ         | -              | Comunicação assíncrona             |
 | Orquestração   | -         | Docker Compose   | -              | Gerenciamento dos containers       |
 
@@ -54,29 +45,10 @@ livraria-microsservicos/ │
 
 ---
 
-## 📊 Modelagem dos Bancos
-
-### Livros
-```sql
-CREATE TABLE livros (
-  id UUID PRIMARY KEY,
-  titulo VARCHAR(255),
-  autor VARCHAR(255),
-  isbn VARCHAR(13),
-  preco DECIMAL(10,2),
-  estoque INT,
-  criado_em TIMESTAMP,
-  atualizado_em TIMESTAMP
-);
-```
-
 
 ## diagrama da arquitetura
 
 ![Arquitetura](./diagrama.png)
-
-
-
 
 Arquitetura de Microsserviços Proposta
 1. Catálogo de Livros (Java/Spring Boot)
