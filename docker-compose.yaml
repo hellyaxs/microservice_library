@@ -38,7 +38,7 @@ services:
 
   api-flask:
     extends:
-      file: ./src/api-flask-pagamentos/docker-compose.yaml
+      file: ./src/notifications/docker-compose.yaml
       service: api-flask
     depends_on:
       rabbitmq:
@@ -131,6 +131,19 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
   # Banco de LEITURA (réplica) – use para SELECT; replica automaticamente do primary
   database-read:

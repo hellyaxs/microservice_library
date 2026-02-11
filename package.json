@@ -18,7 +18,7 @@
     "api:up": "docker compose up -d api-nestjs api-flask api-golang",
     "api:down": "docker compose stop api-nestjs api-flask api-golang",
 
-    "up:api-java": "docker compose up -d database rabbitmq api-java",
+    "up:books": "docker compose up -d database rabbitmq books",
     "up:api-nestjs": "docker compose up -d rabbitmq api-nestjs",
     "up:api-flask": "docker compose up -d rabbitmq api-flask",
     "up:api-golang": "docker compose up -d rabbitmq api-nestjs api-golang",
@@ -30,10 +30,11 @@
 
     "dev:gateway": "cd src/api-gateway && npm run start:dev",
     "dev:frontend": "cd src/frontend && pnpm run dev",
-    "dev:flask": "cd src/api-flask-pagamentos && python -m flask run",
+    "dev:flask": "cd src/notifications && python -m flask run",
     "dev:golang": "cd src/lending && go run ./cmd/api/main.go",
     "dev:golang:processor": "cd src/lending && go run ./cmd/processor/main.go",
     "dev:books": "cd src/books && ./mvnw spring-boot:run",
+    "dev:users": "cd src/users && npm run start:dev",
 
     "build": "docker compose build",
     "build:books": "docker compose build books",
@@ -42,7 +43,7 @@
     "build:api-golang": "docker compose build api-golang",
     "build:database-read": "docker compose build database-read",
 
-    "env:link": "node -e \"const fs=require('fs');const path=require('path');const root=path.resolve(__dirname,'.env');const dirs=['src/api-gateway','src/api-flask-pagamentos','src/lending','src/books','src/users'];dirs.forEach(d=>{const f=path.join(__dirname,d,'.env');try{fs.unlinkSync(f)}catch(e){}});dirs.forEach(d=>{const f=path.join(__dirname,d,'.env');const r=path.relative(path.dirname(f),root);fs.symlinkSync(r,f,'file')});console.log('Links .env criados em:',dirs.join(', '))\""
+    "env:link": "node -e \"const fs=require('fs');const path=require('path');const root=path.resolve(__dirname,'.env');const dirs=['src/api-gateway','src/notifications','src/lending','src/books','src/users'];dirs.forEach(d=>{const f=path.join(__dirname,d,'.env');try{fs.unlinkSync(f)}catch(e){}});dirs.forEach(d=>{const f=path.join(__dirname,d,'.env');const r=path.relative(path.dirname(f),root);fs.symlinkSync(r,f,'file')});console.log('Links .env criados em:',dirs.join(', '))\""
   },
   "keywords": ["monorepo", "microsservicos", "docker", "livraria"],
   "author": "",
