@@ -1,25 +1,27 @@
 services:
-  api-java:
-    extends:
-      file: ./api-java-person/docker-compose.yaml
-      service: api-java
-    depends_on:
-      rabbitmq:
-         condition: service_healthy
-      database:
-        condition: service_healthy
-    networks:
-      - backend
-    env_file:
-      - .env
-    deploy:
-      resources:
-        limits:
-          cpus: '1.5'
-          memory: 512M
+  # Descomente quando o projeto src/api-java-person existir
+  # api-java:
+  #   extends:
+  #     file: ./src/api-java-person/docker-compose.yaml
+  #     service: api-java
+  #   depends_on:
+  #     rabbitmq:
+  #        condition: service_healthy
+  #     database:
+  #       condition: service_healthy
+  #   networks:
+  #     - backend
+  #   env_file:
+  #     - .env
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '1.5'
+  #         memory: 512M
+
   api-nestjs:
     extends:
-      file: ./api-nestjs-gateway/docker-compose.yaml
+      file: ./src/api-gateway/docker-compose.yaml
       service: api-nestjs  
     depends_on:
       rabbitmq:
@@ -36,7 +38,7 @@ services:
 
   api-flask:
     extends:
-      file: ./api-flask-pagamentos/docker-compose.yaml
+      file: ./src/api-flask-pagamentos/docker-compose.yaml
       service: api-flask
     depends_on:
       rabbitmq:
@@ -55,8 +57,8 @@ services:
 
   api-golang:
     extends:
-        file: ./api-golang-notificacoes/docker-compose.yaml
-        service: api-golang
+      file: ./src/lending/docker-compose.yaml
+      service: api-golang
     depends_on:
       api-nestjs:
         condition: service_healthy
@@ -98,6 +100,7 @@ services:
       rabbitmqctl set_permissions -p / ${RABBITMQ_USER} '.*' '.*' '.*';
       wait \$$pid"
 
+  # Banco de ESCRITA (primary) – use para INSERT/UPDATE/DELETE
   database:
     image: postgres:15
     ports:
@@ -107,13 +110,60 @@ services:
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}   
+      POSTGRES_DB: ${DB_NAME}
+      REPLICATION_PASSWORD: ${REPLICATION_PASSWORD:-replicator_secret}
+    volumes:
+      - postgres_write_data:/var/lib/postgresql/data
+      - ./docker/postgres-init/01-create-replication-user.sh:/docker-entrypoint-initdb.d/01-create-replication-user.sh
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=replica"
+      - "-c"
+      - "max_wal_senders=3"
+      - "-c"
+      - "max_replication_slots=3"
+      - "-c"
+      - "wal_keep_size=64MB"
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${DB_USER}", "-d", "${DB_NAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
+
+  # Banco de LEITURA (réplica) – use para SELECT; replica automaticamente do primary
+  database-read:
+    build:
+      context: ./docker/postgres-replica
+      dockerfile: Dockerfile
+    ports:
+      - "5433:5432"
+    networks:
+      - backend
+    environment:
+      REPLICATION_PRIMARY_HOST: database
+      REPLICATION_PRIMARY_PORT: 5432
+      REPLICATION_PASSWORD: ${REPLICATION_PASSWORD:-replicator_secret}
+      PGDATA: /var/lib/postgresql/data
+      # Usuário do primary (clone tem os mesmos usuários); usado no healthcheck
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_read_data:/var/lib/postgresql/data
+    depends_on:
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  postgres_write_data:
+  postgres_read_data:
 
 networks:
   backend:

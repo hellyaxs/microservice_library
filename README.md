@@ -31,8 +31,7 @@ A aplicação é composta por múltiplos serviços independentes que se comunica
 | Users          | Java      | Spring Boot      | PostgreSQL     | Autenticação e dados dos usuários  |
 | Pagamentos     | Python    | FastAPI          | PostgreSQL     | Processamento de pagamentos        |
 | Notificações   | Go        | Fiber            | PostgreSQL     | Envia notificações aos usuários    |
-| Empréstimos    | Java      | Spring Boot      | PostgreSQL     | Controle de empréstimos de livros  |
-| Discovery      | -         | Consul           | -              | Registro e descoberta de serviços  |
+| Empréstimos    | GO        | gin              | PostgreSQL     | Controle de empréstimos de livros  |
 | Mensageria     | -         | RabbitMQ         | -              | Comunicação assíncrona             |
 | Orquestração   | -         | Docker Compose   | -              | Gerenciamento dos containers       |
 
@@ -75,3 +74,59 @@ CREATE TABLE livros (
 ## diagrama da arquitetura
 
 ![Arquitetura](./diagrama.png)
+
+
+
+
+Arquitetura de Microsserviços Proposta
+1. Catálogo de Livros (Java/Spring Boot)
+
+Gerenciamento de livros, autores, editoras, categorias
+Busca e filtragem avançada de acervo
+ISBN, metadados bibliográficos
+Integração com APIs externas (Google Books, Open Library)
+Java é excelente aqui pela robustez e ecossistema Spring
+
+2. Gestão de Empréstimos (Go)
+
+Controle de empréstimos e devoluções
+Cálculo de multas e renovações
+Reservas de livros
+Regras de negócio de prazos
+Go oferece alta performance e concorrência ideal para operações críticas
+
+3. Gestão de Usuários/Membros (Node.js/Express)
+
+Cadastro e autenticação de usuários
+Perfis (estudante, professor, comunidade)
+Histórico pessoal de leituras
+Preferências e recomendações
+Node.js é ágil para APIs REST e integração com frontend
+
+4. Notificações e Comunicação (Python/FastAPI)
+
+Envio de emails (vencimentos, reservas disponíveis)
+Notificações push
+Lembretes automáticos
+Geração de relatórios
+Python facilita integrações com serviços externos e agendamento
+
+Contextos Adicionais (Opcional)
+5. Relatórios e Analytics (Python/Django)
+
+Dashboards gerenciais
+Estatísticas de uso
+Análise de popularidade de livros
+Python com pandas/numpy para análise de dados
+
+6. Pagamentos/Multas (Node.js ou Java)
+
+Processamento de multas
+Integração com gateways de pagamento
+Histórico financeiro
+
+Comunicação Entre Serviços
+
+Síncrona: REST APIs ou gRPC
+Assíncrona: RabbitMQ, Kafka ou Redis para eventos
+Event Sourcing: Para auditoria de empréstimos

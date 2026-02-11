@@ -1,0 +1,8 @@
+{
+  "name": "Copy of Livraria Digital Microservices Dashboard",
+  "description": "A comprehensive administrative frontend for a microservices-based digital library system, featuring real-time monitoring, book management, and AI-powered insights.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
